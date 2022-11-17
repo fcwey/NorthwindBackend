@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Entities.Concrete;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,5 +17,7 @@ namespace Business.Contants
         public static string CategoryAdded = "Kategori Başarıyla eklendi";
         public static string CategoryDeleted = "Kategori Başarıyla silindi";
         public static string CategoryUpdated = "Kategori Başarıyla güncellendi";
+
+        public static string UserNotFound = "Kullanıcı Bulunamadı";
     }
 }

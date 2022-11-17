@@ -15,7 +15,14 @@ namespace Core.Utilities.Results
         public ErrorDataResult(T data) : base(data, false)
         {
         }
-       
+        public ErrorDataResult(string message) : base(default, false, message)
+        { 
+        
+        }
+        public ErrorDataResult() : base(default, false)
+        {
+
+        }
         //default kısımlar çalışmadı ders=13 büyük ihtimalle 
     }
 }
