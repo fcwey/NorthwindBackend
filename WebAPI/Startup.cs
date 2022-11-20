@@ -1,3 +1,6 @@
+using Core.Utilities.Security.Encyption;
+using Core.Utilities.Security.Jwt;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -6,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +29,28 @@ namespace WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
+            services.AddCors(option =>
+            {
+                option.AddPolicy("AllowOrigin",
+                    builder => builder.WithOrigins("http://localhost:3000")); //Bu sisteme giriþ yapacak alanlar yazýlýr
+            });
+            var tokenOptions = Configuration.GetSection("TokenOption").Get<TokenOption>();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidIssuer = tokenOptions.Issuer,
+                        ValidAudience = tokenOptions.Audience,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
+                    };
+
+                });
             services.AddControllers();
         }
 
@@ -36,11 +62,14 @@ namespace WebAPI
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(builder => builder.WithOrigins("http://localhost:3000").AllowAnyHeader()); //Eger bu adresten istek gelirde tümünü kabul er demek
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseAuthentication(); //Sadece anahtardýr. yetkisi bellidir. Ev sahibinin akrabasýdýr. sadece eve girer odalarý kurcalamaz
+            app.UseAuthorization();  //Yetkidir.Ev Sahibidir
 
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
