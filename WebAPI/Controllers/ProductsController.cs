@@ -49,7 +49,8 @@ namespace WebAPI.Controllers
             return BadRequest();
 
         }
-        [HttpGet("add")]
+
+        [HttpPost("add")]
         public IActionResult Add(Product product)
 {
             var result = _productService.Add(product);
@@ -60,7 +61,7 @@ namespace WebAPI.Controllers
             return BadRequest(result.Message);
 
         }
-        [HttpGet("update")]
+        [HttpPost("update")]
         public IActionResult Update(Product product)
         {
             var result = _productService.Update(product);
@@ -71,10 +72,21 @@ namespace WebAPI.Controllers
             return BadRequest(result.Message);
 
         }
-        [HttpGet("delete")]
+        [HttpPost("delete")]
         public IActionResult Delete(Product product)
         {
             var result = _productService.Delete(product);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Message);
+            }
+            return BadRequest(result.Message);
+
+        }
+        [HttpPost("transaction")]
+        public IActionResult TransactionTest(Product product)
+        {
+            var result = _productService.TransactionalOperation(product);
             if (result.IsSuccess)
             {
                 return Ok(result.Message);
