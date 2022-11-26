@@ -8,6 +8,7 @@ using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,6 @@ namespace Business.Concrete
         //Dependency Injection kalıbı oluşturduk
         //bağımlılıklardan kurtulduk
         private IProductDal _productDal;
-
         public ProductManager(IProductDal productDal) //Constroctar kalıp
         {
             _productDal = productDal;
