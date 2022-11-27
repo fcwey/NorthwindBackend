@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,5 +25,7 @@ namespace Business.Constants
         public static string UserAlreadyExists="Bu kullanıcı zaten mevcut";
         public static string UserRegistered="Kullanıcı Başarıyla Kaydedildi";
         public static string AccessTokenCreated="Access Token Başarıyla Oluşturuldu";
+
+        public static string AuthorizationDenied = "Yetkiniz yok";
     }
 }
