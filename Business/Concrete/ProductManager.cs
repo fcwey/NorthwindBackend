@@ -75,6 +75,7 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<Product>>(_productDal.GetList(p => p.CategoryId == categoryId).ToList());
         }
+
         [TransactionScopeAspect]
         public IResult TransactionalOperation(Product product)
         {

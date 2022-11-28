@@ -11,13 +11,13 @@ using System.Threading.Tasks;
 
 namespace Core.Aspects.Autofac.Logging
 {
-    public class LogAspect:MethotInterception
+    public class LogAspect : MethotInterception
     {
         private LoggerServiceBase _loggerServiceBase;
 
         public LogAspect(Type loggerService)
         {
-            if (loggerService.BaseType!= typeof(LoggerServiceBase))
+            if (loggerService.BaseType != typeof(LoggerServiceBase))
             {
                 throw new Exception(AspectMessages.WrongLoggerType);
             }
@@ -29,11 +29,17 @@ namespace Core.Aspects.Autofac.Logging
         }
         private LogDetail GetLogDetail(IInvocation invocation)
         {
-            var logParameters=invocation.Arguments.Select(x=>new LogParameter
+            var logParameters = new List<LogParameter>();
+            for (int i = 0; i < invocation.Arguments.Length; i++)
             {
-                Value=x,
-                Type=x.GetType().Name
-            }).ToList();
+                logParameters.Add(new LogParameter
+                {
+                    Name = invocation.GetConcreteMethod().GetParameters()[i].Name,
+                    Value = invocation.Arguments[i],
+                    Type = invocation.Arguments[i].GetType().Name
+                });
+            }
+
             var logDetail = new LogDetail
             {
                 MethodName = invocation.Method.Name,
