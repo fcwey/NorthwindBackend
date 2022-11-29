@@ -68,6 +68,7 @@ namespace WebAPI
                 app.UseDeveloperExceptionPage();
             }
 
+            app.ConfigureCustomExceptionMiddleware();
             app.UseCors(builder => builder.WithOrigins("http://localhost:3000").AllowAnyHeader()); //Eger bu adresten istek gelirde tümünü kabul er demek
 
             app.UseHttpsRedirection();
@@ -76,7 +77,7 @@ namespace WebAPI
             app.UseAuthentication(); //Sadece anahtardýr. yetkisi bellidir. Ev sahibinin akrabasýdýr. sadece eve girer odalarý kurcalamaz
             app.UseAuthorization();  //Yetkidir.Ev Sahibidir
 
-
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

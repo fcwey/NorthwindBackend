@@ -12,7 +12,7 @@ namespace Core.Utilities.Interceptors
     {
         protected virtual void OnBefore(IInvocation ınvocation) { }
         protected virtual void OnAfter(IInvocation ınvocation) { }
-        protected virtual void OnExeption(IInvocation ınvocation) { }
+        protected virtual void OnExeption(IInvocation ınvocation, System.Exception e) { }
         protected virtual void OnSuccess(IInvocation ınvocation) { }
 
 
@@ -24,11 +24,11 @@ namespace Core.Utilities.Interceptors
             {
                 invocation.Proceed();
             }
-            catch (Exception)
+            catch (Exception e)
             {
 
                 isSuccess = false;
-                OnExeption(invocation);
+                OnExeption(invocation,e);
                 throw;
             }
             finally
